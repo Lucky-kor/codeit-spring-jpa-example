@@ -1,13 +1,15 @@
+# 기존 PostgreSQL 수업 환경. 별도 DB 준비 후 --spring.profiles.active=dev 로 선택한다.
+# 기본 README 실습은 application-local.yml의 H2를 사용하므로 이 파일을 바꿀 필요가 없다.
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/codeitpractice
+    url: jdbc:postgresql://localhost:5432/codeitpractice # 미리 만들어 둔 학습용 DB.
     username: admin
     password: q1w2e3r4
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
+      ddl-auto: create # 시작 시 기존 테이블을 재생성한다. 기존 데이터가 삭제되는 학습 설정이다.
+    show-sql: true # 객체 조작이 어떤 SQL로 바뀌는지 확인한다.
     properties:
       hibernate:
         format_sql: true

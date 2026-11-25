@@ -1,3 +1,10 @@
+# 기본 복습 환경: 별도 PostgreSQL 설치 없이 H2 메모리 DB로 시작한다.
 spring:
   profiles:
-    active: dev
+    active: local
+
+# 하나의 Runner만 실행한다. basic / mapping / relations, 테스트용 none 중 선택한다.
+# 예제는 --study.example=... 인자로 선택하며 생략 시 각 단원의 기본 예제를 실행한다.
+# basic: 01, mapping: identity, relations: many-to-many가 각 기본값이다.
+study:
+  lesson: relations
