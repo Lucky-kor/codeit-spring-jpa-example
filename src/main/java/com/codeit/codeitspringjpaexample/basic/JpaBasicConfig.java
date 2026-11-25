@@ -1,6 +1,7 @@
 package com.codeit.codeitspringjpaexample.basic;
 
 import com.codeit.codeitspringjpaexample.basic.entity.Member;
+import com.codeit.codeitspringjpaexample.order.entity.Order;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -24,7 +25,7 @@ public class JpaBasicConfig {
 //            example02();
 //            example03();
 //            example04();
-            example05();
+//            example05();
         };
     }
 
