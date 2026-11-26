@@ -125,7 +125,7 @@ class AssociationMappingTests {
         tx.commit();
     }
 
-    /** 편의 메서드의 중복 호출과 관계 변경 후에도 메모리의 연결과 DB 외래 키가 일치해야 한다. */
+    /** 저장 전 신규 객체의 중복 호출과 관계 변경을 확인한다. 저장된 주문 재배정은 orphanRemoval과 충돌할 수 있다. */
     @Test
     void convenienceMethodsAvoidDuplicatesAndMoveRelations() {
         tx.begin();

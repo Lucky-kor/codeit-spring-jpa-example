@@ -1,10 +1,14 @@
-# 기본 복습 환경: 별도 PostgreSQL 설치 없이 H2 메모리 DB로 시작한다.
+# 사용자가 수업에서 사용하던 기본 PostgreSQL 환경을 유지한다.
+# 별도 DB 없이 복습할 때는 --spring.profiles.active=local 로 H2를 선택한다.
 spring:
   profiles:
-    active: local
+    active: dev
+  sql:
+    init:
+      mode: never # 기본 데이터는 api 단원의 MemberDataRunner가 넣는다. PostgreSQL 전용 SQL은 자동 실행하지 않는다.
 
-# 하나의 Runner만 실행한다. basic / mapping / relations, 테스트용 none 중 선택한다.
-# 예제는 --study.example=... 인자로 선택하며 생략 시 각 단원의 기본 예제를 실행한다.
-# basic: 01, mapping: identity, relations: many-to-many가 각 기본값이다.
+# api: 회원 API/페이징/N+1/cascade와 샘플 데이터 준비(기본).
+# 이전 복습은 basic / mapping / relations / discodeit, 자동 테스트는 none으로 선택한다.
+# study.example을 생략하면 basic=01, mapping=identity, relations=many-to-many, discodeit=mapping.
 study:
-  lesson: relations
+  lesson: api

@@ -39,7 +39,9 @@ public class Order {
 
     // 주문 1개 : 주문 항목 여러 개. mappedBy의 order는 OrderCoffee 안의 필드명이다.
     // 외래 키 ORDER_ID는 반대쪽 OrderCoffee.order가 관리한다.
-    @OneToMany(mappedBy = "order")
+    // 주문을 삭제할 때 그 주문의 항목도 삭제한다. Coffee는 여러 주문이 공유하므로 삭제를 전파하지 않는다.
+    // 회원 → 주문 → 주문 항목 순으로 REMOVE가 전달되어 항목의 ORDER_ID FK가 삭제를 막지 않는다.
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
     private List<OrderCoffee> orderCoffees = new ArrayList<>();
 
     // 주문에서 시작하여 항목의 order도 연결한다. 같은 항목을 두 번 넣지 않는다.
@@ -75,6 +77,8 @@ public class Order {
 
     // 관계의 주인인 주문에서 회원을 연결한다. 인자로 null을 주면 객체의 연결을 해제한다.
     // 회원이 바뀌는 경우 이전 회원의 목록에서도 제거해 객체 양쪽의 상태를 맞춘다.
+    // 단, 현재 Member.orders는 orphanRemoval=true다. 이미 저장된 주문을 재배정하면 삭제될 수 있다.
+    // 신규 객체 연결과 주문 삭제(회원 연결 해제)를 관찰하는 용도로 사용한다.
     public void addMember(Member member) {
         if (this.member != null && this.member != member) {
             this.member.getOrders().remove(this);

@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  * 이름에 Test가 있지만 자동 테스트 클래스가 아니라, 애플리케이션 시작 직후 실행하는 실습 코드다.
  */
 @Configuration
-@ConditionalOnProperty(name = "study.lesson", havingValue = "relations", matchIfMissing = true)
+@ConditionalOnProperty(name = "study.lesson", havingValue = "relations")
 public class OrderTestRunner {
 
     // 다른 단원의 Runner와 이름이 겹치지 않게 등록한다. study.lesson으로 한 단원만 선택한다.
