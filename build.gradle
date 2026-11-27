@@ -1,3 +1,4 @@
+// 실행 환경 설정 파일. ORM 문법보다 먼저 필요한 Java/의존성/테스트 실행 설정을 모은다.
 plugins {
     id 'java'
     id 'org.springframework.boot' version '4.2.0'
@@ -10,6 +11,7 @@ description = 'codeit-spring-jpa-example'
 
 java {
     toolchain {
+        // 소스 컴파일은 JDK 17을 사용한다. Gradle 실행 JDK와 구별한다(README 참고).
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
@@ -19,22 +21,41 @@ repositories {
 }
 
 dependencies {
+    // local 프로필의 메모리 DB와 브라우저 SQL 확인 화면.
     implementation 'org.springframework.boot:spring-boot-h2console'
+    // JPA API, Hibernate(ORM 구현체), 스프링의 JPA 연결을 준비한다.
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // 회원 API와 페이징 요청을 실행한다. 이전 단원의 Runner는 HTTP 요청 없이도 실행할 수 있다.
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    // @Getter/@Setter/@NoArgsConstructor 코드를 컴파일할 때 생성한다. JPA 매핑 기능은 아니다.
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
+    // 테스트에서는 H2로 실제 저장/재조회 결과를 확인한다.
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql' // dev 프로필에서만 사용하는 DB 드라이버.
+    // 기존 수업의 DTO ↔ 엔티티 변환기. 구현 코드는 컴파일할 때 생성하며 직접 구현체를 수정하지 않는다.
+    implementation 'org.mapstruct:mapstruct:1.5.1.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
+}
+
+// OS의 기본 인코딩과 무관하게 한국어 주석/문자열을 UTF-8로 컴파일한다.
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// JDK 17 환경에서도 한국어 학습 출력이 '?'로 깨지지 않게 bootRun에 적용한다.
+tasks.withType(JavaExec).configureEach {
+    systemProperty 'file.encoding', 'UTF-8'
 }
 
 tasks.named('test') {
+    // src/test/java의 JUnit 테스트를 ./gradlew test 명령으로 실행한다.
     useJUnitPlatform()
 }
